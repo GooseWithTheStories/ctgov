@@ -36,7 +36,7 @@ from typing import Any, Dict, Iterator, Optional, Sequence
 from .client import BASE_URL, Client, CTGovError
 from .normalize import normalize_endpoint, parse_timeframe
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 __all__ = [
     "Client",
     "CTGovError",

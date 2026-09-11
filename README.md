@@ -93,8 +93,10 @@ client.count("AREA[Phase]PHASE3", filters={"advanced": "AREA[HasResults]true"}) 
 |---|---|
 | `endpoint_raw` | untouched registry text |
 | `endpoint_domain` | `safety`, `efficacy`, `patient_reported`, `pharmacokinetics`, `biomarker_laboratory`, `clinical_assessment`, `behavioral_functional`, `healthcare_utilization`, `immunogenicity`, `feasibility_implementation`, `diagnostic_accuracy`, `unclassified` |
-| `endpoint_measure_type` | `change_from_baseline`, `proportion`, `count`, `score_scale`, `time_to_event`, `pk_parameter`, `concentration`, `diagnostic_accuracy`, `unclassified` |
-| `endpoint_canonical` | recognised concept: `overall_survival`, `progression_free_survival`, `objective_response_rate`, `adverse_event_incidence`, `hba1c_change`, `quality_of_life`, `seroconversion`, … |
+| `endpoint_measure_type` | `change_from_baseline`, `proportion`, `count`, `score_scale`, `time_to_event`, `pk_parameter`, `concentration`, `continuous_value`, `diagnostic_accuracy`, `unclassified` |
+| `endpoint_canonical` | one of 38 recognised concepts: `overall_survival`, `progression_free_survival`, `invasive_disease_free_survival`, `invasive_breast_cancer_free_survival`, `recurrence_free_survival`, `objective_response_rate`, `duration_of_response`, `pathologic_complete_response`, `ki67_response`, `dose_limiting_toxicity`, `adverse_event_incidence`, `serious_adverse_events`, `hba1c_change`, `cgm_time_in_range`, `clinical_status_ordinal_scale`, `quality_of_life`, … |
+| `endpoint_domain_inferred` | `true` when a recognised concept set the domain. The concept outranks loose keywords, so this is the *stronger* signal — do not filter these rows out. |
+| `endpoint_measure_inferred` | `true` when the text named a concept but no measure (e.g. a bare "HbA1c"), so the measure type came from the concept. |
 | `endpoint_direction` | `higher_is_better` / `lower_is_better` / `ambiguous` / `unspecified` |
 | `horizon_days` | free-text timeframe parsed to a number |
 | `timepoint_count`, `is_longitudinal`, `baseline_anchored` | schedule shape |
@@ -104,8 +106,9 @@ client.count("AREA[Phase]PHASE3", filters={"advanced": "AREA[HasResults]true"}) 
 
 Normalization is deterministic and rule-based — no model inference, so it is reproducible,
 auditable, and free to run. It does not classify everything, and it says so rather than
-guessing: across the full registry, **~67% of endpoints get a domain, ~87% a measure type,
-~61% a parsed time horizon.** The rest is a genuine long tail of disease-specific measures
+guessing: across 124,790 endpoints from 14,170 trials started since 2020, **72% get a
+domain, 90% a measure type, 61% a parsed time horizon, and 35% a recognised concept.** The rest
+is a genuine long tail of disease-specific measures
 ("Swollen Joint Count", "Bowel Filling Properties: Distension/Distal Ileum") and is labelled
 `unclassified` with raw text retained.
 
